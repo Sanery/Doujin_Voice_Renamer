@@ -24,7 +24,7 @@ def _load_translations():
 
 class Dlsite(object):
     TRANSLATIONS: Final = _load_translations()
-    RJCODE_PATTERN: Final = re.compile(r'RJ(\d{6})(?!\d+)')
+    RJCODE_PATTERN: Final = re.compile(r'RJ(\d{6})(\d{2})*(?!\d+)')
     RGCODE_PATTERN: Final = re.compile(r'RG(\d{5})(?!\d+)')
     SRICODE_PATTERN: Final = re.compile(r'SRI(\d{10})(?!\d+)')
 

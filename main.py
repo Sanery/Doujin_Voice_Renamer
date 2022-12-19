@@ -21,7 +21,7 @@ R_COOKIE = {'adultchecked': '1'}
 
 # re.compile()返回一个匹配对象
 # ensure path name is exactly RJ###### or RT######
-pattern = re.compile("^R[EJT]\d{6}$")
+pattern = re.compile("^R[EJT]\d{6}(\d{2})*$")
 # filter to substitute illegal filenanme characters to " "
 filter = re.compile('[\\\/:"*?<>|]+')
 
@@ -59,16 +59,12 @@ def find_all(source, dest):
 
 
 # 从文件夹名称中提取r_code
-def get_r_code(originalName, matchCode):
-    index_list = find_all(originalName, matchCode)
-    if index_list == -1:
-        return ""
-    for i in range(0, len(index_list)):
-        r_idx = index_list[i]
-        r_code = originalName[r_idx:(r_idx) + 8]
-        pattern = re.compile("^" + matchCode + "\d{6}$")
-        if pattern.match(r_code):
-            return r_code.upper()
+def get_r_code(originalName):
+    pattern = re.compile(r'[Rr][JjTt]\d{6}(\d{2})*(?!\d+)')
+    res = pattern.search(originalName)
+    if res:
+        span = res.span()
+        return originalName[span[0]:span[1]]
     return ""
 
 
@@ -137,11 +133,7 @@ def change_name():
                 # 获取文件夹原始名称
                 originalName = file
                 # 尝试获取r_code
-                r_code = ""
-                for matchCode in ['RJ', 'rj', 'RT', 'rt']:
-                    r_code = get_r_code(originalName, matchCode)
-                    if r_code:
-                        break
+                r_code = get_r_code(originalName)
                 # 如果没能提取到r_code
                 if r_code == "":
                     continue  # 跳过该文件夹
