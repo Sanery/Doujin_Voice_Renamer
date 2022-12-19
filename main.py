@@ -9,7 +9,7 @@ import re
 import os
 import json
 
-VERSION = '1.4.1'
+VERSION = '1.4.2'
 
 # 默认配置
 template = 'workno [circle] title (cv)'  # 默认命名模板
